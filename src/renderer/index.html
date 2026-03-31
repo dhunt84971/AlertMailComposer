@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html class="sl-theme-dark">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data:; script-src 'self';">
+  <title>AlertMailComposer</title>
+  <link rel="stylesheet" href="../../node_modules/ag-grid-community/styles/ag-grid.css">
+  <link rel="stylesheet" href="../../node_modules/ag-grid-community/styles/ag-theme-alpine.css">
+  <link rel="stylesheet" href="styles/theme.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Sidebar Navigation -->
+    <div id="sidebar">
+      <div class="app-title">AlertMailComposer</div>
+      <nav>
+        <button class="nav-btn active" data-view="alerts">
+          <span class="nav-icon">&#9993;</span>
+          <span>Alert Emails</span>
+        </button>
+        <button class="nav-btn" data-view="mailconfig">
+          <span class="nav-icon">&#9881;</span>
+          <span>Mail Configuration</span>
+        </button>
+        <button class="nav-btn" data-view="maillog">
+          <span class="nav-icon">&#128220;</span>
+          <span>Mail Log</span>
+        </button>
+        <button class="nav-btn" data-view="settings">
+          <span class="nav-icon">&#9881;</span>
+          <span>Settings</span>
+        </button>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="connection-status">
+          <span class="status-dot" id="connection-dot"></span>
+          <span id="connection-text">Disconnected</span>
+        </div>
+        <button class="btn btn-secondary" id="theme-toggle" style="padding: 4px 8px; font-size: 12px;" title="Toggle theme">
+          &#9788;
+        </button>
+      </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div id="content">
+      <!-- Alert Emails View -->
+      <div id="view-alerts" class="view active"></div>
+
+      <!-- Mail Configuration View -->
+      <div id="view-mailconfig" class="view"></div>
+
+      <!-- Mail Log View -->
+      <div id="view-maillog" class="view"></div>
+
+      <!-- Settings View -->
+      <div id="view-settings" class="view"></div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toast-container"></div>
+
+  <!-- Modal Overlay -->
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal" id="modal-content"></div>
+  </div>
+
+  <script src="../../node_modules/ag-grid-community/dist/ag-grid-community.min.js"></script>
+  <script src="codemirror-bundle.js"></script>
+  <script src="views/Settings/settings.js"></script>
+  <script src="views/AlertEmails/alertEmails.js"></script>
+  <script src="views/MailConfig/mailConfigView.js"></script>
+  <script src="views/MailLog/mailLog.js"></script>
+  <script src="app.js"></script>
+  <script src="init-editors.js"></script>
+</body>
+</html>

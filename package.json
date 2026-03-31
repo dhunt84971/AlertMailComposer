@@ -1,0 +1,43 @@
+{
+  "name": "alert-mail-composer",
+  "version": "1.0.0",
+  "description": "Desktop application for managing AlertMailService alert email definitions",
+  "main": "src/main/main.js",
+  "scripts": {
+    "prebuild:renderer": "esbuild src/renderer/codemirror-setup.js --bundle --outfile=src/renderer/codemirror-bundle.js --format=iife --platform=browser",
+    "start": "npm run prebuild:renderer && electron .",
+    "build": "npm run prebuild:renderer && electron-builder --win --dir",
+    "build:installer": "npm run prebuild:renderer && electron-builder --win --dir",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "author": "",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "electron": "^41.0.4",
+    "electron-builder": "^26.8.1",
+    "esbuild": "^0.27.4",
+    "vitest": "^3.1.0"
+  },
+  "dependencies": {
+    "@codemirror/lang-sql": "^6.10.0",
+    "@codemirror/state": "^6.6.0",
+    "@codemirror/theme-one-dark": "^6.1.3",
+    "@codemirror/view": "^6.40.0",
+    "@shoelace-style/shoelace": "^2.20.1",
+    "ag-grid-community": "^35.2.0",
+    "codemirror": "^6.0.2",
+    "mssql": "^12.2.1"
+  },
+  "build": {
+    "appId": "com.alertmail.composer",
+    "productName": "AlertMailComposer",
+    "win": {
+      "target": "dir"
+    },
+    "files": [
+      "src/**/*",
+      "node_modules/**/*"
+    ]
+  }
+}
