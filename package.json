@@ -33,11 +33,17 @@
     "appId": "com.alertmail.composer",
     "productName": "AlertMailComposer",
     "win": {
-      "target": "dir"
+      "target": "dir",
+      "icon": "assets/icon.ico"
+    },
+    "linux": {
+      "icon": "assets/icon.png"
     },
     "files": [
       "src/**/*",
-      "node_modules/**/*"
+      "node_modules/**/*",
+      "assets/icon.png",
+      "assets/icon.ico"
     ]
   }
 }
