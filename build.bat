@@ -62,43 +62,43 @@ echo       Done.
 echo.
 
 REM --- Verify electron-builder output ---
-if not exist "dist\win-unpacked\AlertMailComposer.exe" (
-    echo ERROR: electron-builder output not found at dist\win-unpacked\
-    echo        Expected dist\win-unpacked\AlertMailComposer.exe
-    exit /b 1
-)
+if not exist "dist\win-unpacked\AlertMailComposer.exe" goto :no_exe
+goto :exe_ok
+:no_exe
+echo ERROR: electron-builder output not found at dist\win-unpacked\
+echo        Expected dist\win-unpacked\AlertMailComposer.exe
+exit /b 1
+:exe_ok
 
 REM --- Step 5: Compile Inno Setup installer ---
 echo [5/5] Compiling Inno Setup installer...
 
 REM Try iscc on PATH first
 where iscc >nul 2>&1
-if %ERRORLEVEL% equ 0 (
+if !ERRORLEVEL! equ 0 (
     set "ISCC=iscc"
     goto :run_iscc
 )
 
 REM Check common Inno Setup install locations
 set "ISCC="
-if exist "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" (
-    set "ISCC=C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
-) else if exist "C:\Program Files\Inno Setup 6\ISCC.exe" (
-    set "ISCC=C:\Program Files\Inno Setup 6\ISCC.exe"
-) else if exist "%LOCALAPPDATA%\Programs\Inno Setup 6\ISCC.exe" (
-    set "ISCC=%LOCALAPPDATA%\Programs\Inno Setup 6\ISCC.exe"
-)
+if exist "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" set "ISCC=C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+if "!ISCC!" == "" if exist "C:\Program Files\Inno Setup 6\ISCC.exe" set "ISCC=C:\Program Files\Inno Setup 6\ISCC.exe"
+if "!ISCC!" == "" if exist "%LOCALAPPDATA%\Programs\Inno Setup 6\ISCC.exe" set "ISCC=%LOCALAPPDATA%\Programs\Inno Setup 6\ISCC.exe"
 
-if "!ISCC!" == "" (
-    echo ERROR: Inno Setup compiler (ISCC.exe) not found.
-    echo        Install Inno Setup 6 from https://jrsoftware.org/isdl.php
-    echo        or add its directory to your PATH.
-    echo.
-    echo        The Electron app was built successfully at:
-    echo          dist\win-unpacked\
-    echo        You can run it directly or compile the installer manually:
-    echo          iscc installer\setup.iss
-    exit /b 1
-)
+if "!ISCC!" == "" goto :no_iscc
+goto :run_iscc
+
+:no_iscc
+echo ERROR: Inno Setup compiler (ISCC.exe) not found.
+echo        Install Inno Setup 6 from https://jrsoftware.org/isdl.php
+echo        or add its directory to your PATH.
+echo.
+echo        The Electron app was built successfully at:
+echo          dist\win-unpacked\
+echo        You can run it directly or compile the installer manually:
+echo          iscc installer\setup.iss
+exit /b 1
 
 :run_iscc
 echo       Using: !ISCC!

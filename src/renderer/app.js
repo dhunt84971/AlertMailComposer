@@ -109,6 +109,12 @@ window.app = {
 async function initApp() {
   await loadTheme();
 
+  // Display app version
+  const versionEl = document.getElementById('app-version');
+  if (versionEl && window.api.getAppVersion) {
+    versionEl.textContent = `v${window.api.getAppVersion()}`;
+  }
+
   // Initialize view modules
   if (window.initSettingsView) window.initSettingsView();
   if (window.initAlertEmailsView) window.initAlertEmailsView();
