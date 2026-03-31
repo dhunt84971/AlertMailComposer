@@ -187,13 +187,21 @@ function newAlert() {
   document.getElementById('alert-message').value = '';
   document.getElementById('alert-status-panel').style.display = 'none';
 
-  // Clear query editors
-  if (window.alertQueryEditor) window.alertQueryEditor.dispatch({ changes: { from: 0, to: window.alertQueryEditor.state.doc.length, insert: '' } });
-  if (window.alertMsgQueryEditor) window.alertMsgQueryEditor.dispatch({ changes: { from: 0, to: window.alertMsgQueryEditor.state.doc.length, insert: '' } });
-
   clearValidationErrors();
   hideQueryResults();
   document.getElementById('alerts-edit-panel').style.display = 'block';
+
+  // Clear query editors after panel is visible so CodeMirror can measure the DOM
+  requestAnimationFrame(() => {
+    if (window.alertQueryEditor) {
+      window.alertQueryEditor.dispatch({ changes: { from: 0, to: window.alertQueryEditor.state.doc.length, insert: '' } });
+      window.alertQueryEditor.requestMeasure();
+    }
+    if (window.alertMsgQueryEditor) {
+      window.alertMsgQueryEditor.dispatch({ changes: { from: 0, to: window.alertMsgQueryEditor.state.doc.length, insert: '' } });
+      window.alertMsgQueryEditor.requestMeasure();
+    }
+  });
   document.getElementById('alert-subject').focus();
 }
 
@@ -222,17 +230,21 @@ async function editAlert(id) {
     document.getElementById('alert-lastchecktime').value = alert.LastCheckTime ? new Date(alert.LastCheckTime).toLocaleString() : '';
     document.getElementById('alert-laststatus').value = alert.LastStatus || '';
 
-    // Set query editors
-    if (window.alertQueryEditor) {
-      window.alertQueryEditor.dispatch({ changes: { from: 0, to: window.alertQueryEditor.state.doc.length, insert: alert.Query || '' } });
-    }
-    if (window.alertMsgQueryEditor) {
-      window.alertMsgQueryEditor.dispatch({ changes: { from: 0, to: window.alertMsgQueryEditor.state.doc.length, insert: alert.MessageQuery || '' } });
-    }
-
     clearValidationErrors();
     hideQueryResults();
     document.getElementById('alerts-edit-panel').style.display = 'block';
+
+    // Set query editors after panel is visible so CodeMirror can measure the DOM
+    requestAnimationFrame(() => {
+      if (window.alertQueryEditor) {
+        window.alertQueryEditor.dispatch({ changes: { from: 0, to: window.alertQueryEditor.state.doc.length, insert: alert.Query || '' } });
+        window.alertQueryEditor.requestMeasure();
+      }
+      if (window.alertMsgQueryEditor) {
+        window.alertMsgQueryEditor.dispatch({ changes: { from: 0, to: window.alertMsgQueryEditor.state.doc.length, insert: alert.MessageQuery || '' } });
+        window.alertMsgQueryEditor.requestMeasure();
+      }
+    });
   } catch (err) {
     window.app.showToast(`Error: ${err.message}`, 'error');
   }
