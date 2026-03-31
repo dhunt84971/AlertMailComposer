@@ -8,6 +8,7 @@ function switchView(viewName) {
 
   // Auto-refresh data when switching to a view
   if (viewName === 'alerts' && window.refreshAlertsList) window.refreshAlertsList();
+  if (viewName === 'mailconfig' && window.loadMailConfig) window.loadMailConfig();
   if (viewName === 'maillog' && window.refreshMailLog) window.refreshMailLog();
 }
 
@@ -114,8 +115,7 @@ async function initApp() {
   if (window.initMailConfigView) window.initMailConfigView();
   if (window.initMailLogView) window.initMailLogView();
 
-  // Initialize CodeMirror editors now that all views are ready
-  if (window.initCodeMirrorEditors) window.initCodeMirrorEditors();
+  // CodeMirror editors are lazily initialized when the edit panel becomes visible
 
   // Attempt to connect on startup
   try {

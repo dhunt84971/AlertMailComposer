@@ -191,15 +191,14 @@ function newAlert() {
   hideQueryResults();
   document.getElementById('alerts-edit-panel').style.display = 'block';
 
-  // Clear query editors after panel is visible so CodeMirror can measure the DOM
+  // Initialize editors now that the panel is visible, then clear content
   requestAnimationFrame(() => {
+    if (window.ensureCodeMirrorEditors) window.ensureCodeMirrorEditors();
     if (window.alertQueryEditor) {
       window.alertQueryEditor.dispatch({ changes: { from: 0, to: window.alertQueryEditor.state.doc.length, insert: '' } });
-      window.alertQueryEditor.requestMeasure();
     }
     if (window.alertMsgQueryEditor) {
       window.alertMsgQueryEditor.dispatch({ changes: { from: 0, to: window.alertMsgQueryEditor.state.doc.length, insert: '' } });
-      window.alertMsgQueryEditor.requestMeasure();
     }
   });
   document.getElementById('alert-subject').focus();
@@ -234,15 +233,14 @@ async function editAlert(id) {
     hideQueryResults();
     document.getElementById('alerts-edit-panel').style.display = 'block';
 
-    // Set query editors after panel is visible so CodeMirror can measure the DOM
+    // Initialize editors now that the panel is visible, then set content
     requestAnimationFrame(() => {
+      if (window.ensureCodeMirrorEditors) window.ensureCodeMirrorEditors();
       if (window.alertQueryEditor) {
         window.alertQueryEditor.dispatch({ changes: { from: 0, to: window.alertQueryEditor.state.doc.length, insert: alert.Query || '' } });
-        window.alertQueryEditor.requestMeasure();
       }
       if (window.alertMsgQueryEditor) {
         window.alertMsgQueryEditor.dispatch({ changes: { from: 0, to: window.alertMsgQueryEditor.state.doc.length, insert: alert.MessageQuery || '' } });
-        window.alertMsgQueryEditor.requestMeasure();
       }
     });
   } catch (err) {

@@ -62,8 +62,6 @@ function initMailConfigView() {
 
   document.getElementById('mc-save-btn').addEventListener('click', saveMailConfig);
   document.getElementById('mc-reload-btn').addEventListener('click', loadMailConfig);
-
-  loadMailConfig();
 }
 
 async function loadMailConfig() {
@@ -175,3 +173,4 @@ async function saveMailConfig() {
 }
 
 window.initMailConfigView = initMailConfigView;
+window.loadMailConfig = loadMailConfig;

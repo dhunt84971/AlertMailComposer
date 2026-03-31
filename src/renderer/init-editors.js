@@ -1,17 +1,17 @@
-// Initialize CodeMirror editors after views are built
-// Called explicitly by app.js after all views are initialized
+// Lazily initialize CodeMirror editors when their containers become visible.
+// Called by alertEmails.js when the edit panel is shown.
 
-function initCodeMirrorEditors() {
+function ensureCodeMirrorEditors() {
   const queryContainer = document.getElementById('alert-query-editor');
   const msgQueryContainer = document.getElementById('alert-msgquery-editor');
 
-  if (queryContainer && window.createSqlEditor) {
+  if (!window.alertQueryEditor && queryContainer && window.createSqlEditor) {
     window.alertQueryEditor = window.createSqlEditor(queryContainer);
   }
 
-  if (msgQueryContainer && window.createSqlEditor) {
+  if (!window.alertMsgQueryEditor && msgQueryContainer && window.createSqlEditor) {
     window.alertMsgQueryEditor = window.createSqlEditor(msgQueryContainer);
   }
 }
 
-window.initCodeMirrorEditors = initCodeMirrorEditors;
+window.ensureCodeMirrorEditors = ensureCodeMirrorEditors;
