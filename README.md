@@ -2,6 +2,11 @@
 
 A Windows desktop application for managing the AlertMailService system. Provides a graphical interface for creating, editing, and deleting alert email definitions, configuring SMTP mail server settings, and viewing the mail request log.
 
+<img width="1142" height="602" alt="image" src="https://github.com/user-attachments/assets/cefd231e-a99c-4db6-a709-0ad2a2121803" />
+
+<img width="1143" height="1079" alt="image" src="https://github.com/user-attachments/assets/406c1d84-990b-43f0-bdc6-cf14bfdf5cd3" />
+
+
 ## Features
 
 - **Alert Email Management** -- Full CRUD for alert definitions in the `MailAlerts` SQL Server table. Includes SQL query editors with syntax highlighting (CodeMirror), test execution of trigger and message queries, and rendered message preview with `%%ColumnName%%` and `%%TABLE%%` token substitution.
