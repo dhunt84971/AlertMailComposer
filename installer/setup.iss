@@ -9,7 +9,7 @@
 ;----------------------------------------------------------------------
 
 #define MyAppName "AlertMailComposer"
-#define MyAppVersion "1.0.0"
+#define MyAppVersion "1.0.1"
 #define MyAppPublisher "AlertMailService"
 #define MyAppExeName "AlertMailComposer.exe"
 
