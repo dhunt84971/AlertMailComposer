@@ -32,6 +32,10 @@ function initSettingsView() {
         <div class="error-message"></div>
       </div>
       <div class="form-group" style="display: flex; align-items: center; gap: 8px;">
+        <input type="checkbox" id="setting-encrypt">
+        <label for="setting-encrypt" style="margin-bottom: 0;">Encrypt Connection</label>
+      </div>
+      <div class="form-group" style="display: flex; align-items: center; gap: 8px;">
         <input type="checkbox" id="setting-trustcert" checked>
         <label for="setting-trustcert" style="margin-bottom: 0;">Trust Server Certificate</label>
       </div>
@@ -82,6 +86,7 @@ async function loadSettings() {
     document.getElementById('setting-database').value = config.database.database || '';
     document.getElementById('setting-username').value = config.database.username || '';
     document.getElementById('setting-password').value = config.database.password || '';
+    document.getElementById('setting-encrypt').checked = config.database.encrypt === true;
     document.getElementById('setting-trustcert').checked = config.database.trustServerCertificate !== false;
     document.getElementById('setting-theme').value = config.theme || 'dark';
   } catch (err) {
@@ -95,6 +100,7 @@ function getSettingsFromForm() {
     database: document.getElementById('setting-database').value.trim(),
     username: document.getElementById('setting-username').value.trim(),
     password: document.getElementById('setting-password').value,
+    encrypt: document.getElementById('setting-encrypt').checked,
     trustServerCertificate: document.getElementById('setting-trustcert').checked
   };
 }

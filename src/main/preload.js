@@ -33,4 +33,14 @@ contextBridge.exposeInMainWorld('api', {
   // Mail Log
   getMailRequests: (filter) => ipcRenderer.invoke('mailLog:getAll', filter),
   getMailRequest: (id) => ipcRenderer.invoke('mailLog:getById', id),
+
+  // Services management
+  listServices: () => ipcRenderer.invoke('services:list'),
+  getServiceStatus: (key) => ipcRenderer.invoke('services:getStatus', key),
+  startService: (key) => ipcRenderer.invoke('services:start', key),
+  stopService: (key) => ipcRenderer.invoke('services:stop', key),
+  getServiceConfigPath: (key) => ipcRenderer.invoke('services:getConfigPath', key),
+  setServiceConfigPath: (key, p) => ipcRenderer.invoke('services:setConfigPath', key, p),
+  readServiceConfig: (key) => ipcRenderer.invoke('services:readConfig', key),
+  writeServiceConfig: (key, content) => ipcRenderer.invoke('services:writeConfig', key, content),
 });

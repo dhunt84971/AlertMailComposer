@@ -5,6 +5,7 @@ const { registerConnectionIpc, disconnect } = require('./db/connection');
 const { registerAlertIpc } = require('./db/alertEmails');
 const { registerMailConfigIpc } = require('./db/mailConfig');
 const { registerMailLogIpc } = require('./db/mailLog');
+const { registerServicesIpc } = require('./services');
 
 let mainWindow = null;
 
@@ -39,6 +40,7 @@ app.whenReady().then(() => {
   registerAlertIpc();
   registerMailConfigIpc();
   registerMailLogIpc();
+  registerServicesIpc();
   createWindow();
 });
 

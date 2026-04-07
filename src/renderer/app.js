@@ -10,6 +10,7 @@ function switchView(viewName) {
   if (viewName === 'alerts' && window.refreshAlertsList) window.refreshAlertsList();
   if (viewName === 'mailconfig' && window.loadMailConfig) window.loadMailConfig();
   if (viewName === 'maillog' && window.refreshMailLog) window.refreshMailLog();
+  if (viewName === 'services' && window.refreshServicesView) window.refreshServicesView();
 }
 
 navButtons.forEach(btn => {
@@ -120,6 +121,7 @@ async function initApp() {
   if (window.initAlertEmailsView) window.initAlertEmailsView();
   if (window.initMailConfigView) window.initMailConfigView();
   if (window.initMailLogView) window.initMailLogView();
+  if (window.initServicesView) window.initServicesView();
 
   // CodeMirror editors are lazily initialized when the edit panel becomes visible
 

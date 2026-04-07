@@ -13,7 +13,7 @@ function buildSqlConfig(dbConfig) {
     password: dbConfig.password,
     options: {
       trustServerCertificate: dbConfig.trustServerCertificate !== false,
-      encrypt: true
+      encrypt: dbConfig.encrypt === true
     },
     connectionTimeout: 10000,
     requestTimeout: 30000,

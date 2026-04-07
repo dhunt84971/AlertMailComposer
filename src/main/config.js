@@ -8,7 +8,8 @@ const DEFAULT_CONFIG = {
     database: 'MailAlertDB',
     username: '',
     password: '',
-    trustServerCertificate: true
+    trustServerCertificate: true,
+    encrypt: false
   },
   theme: 'dark'
 };

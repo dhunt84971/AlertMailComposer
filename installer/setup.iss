@@ -52,6 +52,9 @@ Filename: "{app}\{#MyAppExeName}"; Description: "Launch AlertMailComposer"; Flag
 var
   DBPage: TInputQueryWizardPage;
   DBCredPage: TInputQueryWizardPage;
+  DBOptionsPage: TWizardPage;
+  EncryptCheckbox: TNewCheckBox;
+  TrustCertCheckbox: TNewCheckBox;
 
 procedure InitializeWizard;
 begin
@@ -73,6 +76,26 @@ begin
   DBCredPage.Add('Username:', False);
   DBCredPage.Add('Password:', True);
   DBCredPage.Values[0] := 'mailalert_user';
+
+  { --- Connection Options Page --- }
+  DBOptionsPage := CreateCustomPage(DBCredPage.ID,
+    'Connection Options', 'Configure encryption and certificate settings for the SQL Server connection.');
+
+  EncryptCheckbox := TNewCheckBox.Create(DBOptionsPage);
+  EncryptCheckbox.Parent := DBOptionsPage.Surface;
+  EncryptCheckbox.Left := 0;
+  EncryptCheckbox.Top := 16;
+  EncryptCheckbox.Width := DBOptionsPage.SurfaceWidth;
+  EncryptCheckbox.Caption := 'Encrypt Connection';
+  EncryptCheckbox.Checked := False;
+
+  TrustCertCheckbox := TNewCheckBox.Create(DBOptionsPage);
+  TrustCertCheckbox.Parent := DBOptionsPage.Surface;
+  TrustCertCheckbox.Left := 0;
+  TrustCertCheckbox.Top := EncryptCheckbox.Top + EncryptCheckbox.Height + 12;
+  TrustCertCheckbox.Width := DBOptionsPage.SurfaceWidth;
+  TrustCertCheckbox.Caption := 'Trust Server Certificate';
+  TrustCertCheckbox.Checked := True;
 end;
 
 function NextButtonClick(CurPageID: Integer): Boolean;
@@ -132,22 +155,35 @@ procedure WriteConfigFile;
 var
   ConfigPath: String;
   Lines: TArrayOfString;
+  EncryptValue: String;
+  TrustCertValue: String;
 begin
   { Write config.json to the resources directory where the app reads it }
   ConfigPath := ExpandConstant('{app}\resources\config.json');
 
-  SetArrayLength(Lines, 11);
+  if EncryptCheckbox.Checked then
+    EncryptValue := 'true'
+  else
+    EncryptValue := 'false';
+
+  if TrustCertCheckbox.Checked then
+    TrustCertValue := 'true'
+  else
+    TrustCertValue := 'false';
+
+  SetArrayLength(Lines, 12);
   Lines[0]  := '{';
   Lines[1]  := '  "database": {';
   Lines[2]  := '    "server": "' + EscapeJsonString(Trim(DBPage.Values[0])) + '",';
   Lines[3]  := '    "database": "' + EscapeJsonString(Trim(DBPage.Values[1])) + '",';
   Lines[4]  := '    "username": "' + EscapeJsonString(Trim(DBCredPage.Values[0])) + '",';
   Lines[5]  := '    "password": "' + EscapeJsonString(DBCredPage.Values[1]) + '",';
-  Lines[6]  := '    "trustServerCertificate": true';
-  Lines[7]  := '  },';
-  Lines[8]  := '  "theme": "dark"';
-  Lines[9]  := '}';
-  Lines[10] := '';
+  Lines[6]  := '    "encrypt": ' + EncryptValue + ',';
+  Lines[7]  := '    "trustServerCertificate": ' + TrustCertValue;
+  Lines[8]  := '  },';
+  Lines[9]  := '  "theme": "dark"';
+  Lines[10] := '}';
+  Lines[11] := '';
 
   if not ForceDirectories(ExtractFilePath(ConfigPath)) then
     MsgBox('Warning: Could not create resources directory.', mbError, MB_OK)
