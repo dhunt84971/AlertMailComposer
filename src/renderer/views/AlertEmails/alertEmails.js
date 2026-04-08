@@ -95,7 +95,7 @@ function initAlertEmailsView() {
         <!-- Message -->
         <div class="form-group">
           <label>Message (supports %%ColumnName%% and %%TABLE%% tokens)</label>
-          <textarea id="alert-message" rows="5" maxlength="3000" placeholder="Email message body..." style="width: 100%; padding: 8px 12px; background-color: var(--bg-input); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: inherit; font-size: 14px; resize: vertical;"></textarea>
+          <textarea id="alert-message" rows="5" maxlength="8000" placeholder="Email message body..." style="width: 100%; padding: 8px 12px; background-color: var(--bg-input); border: 1px solid var(--border-color); border-radius: 4px; color: var(--text-primary); font-family: inherit; font-size: 14px; resize: vertical;"></textarea>
           <div class="error-message" id="alert-message-error"></div>
         </div>
 
@@ -325,8 +325,8 @@ function validateAlertForm() {
   }
 
   const queryText = window.alertQueryEditor ? window.alertQueryEditor.state.doc.toString() : '';
-  if (queryText.length > 3000) {
-    document.getElementById('alert-query-error').textContent = 'Query must be 3000 characters or less';
+  if (queryText.length > 8000) {
+    document.getElementById('alert-query-error').textContent = 'Query must be 8000 characters or less';
     document.getElementById('alert-query-error').style.display = 'block';
     valid = false;
   }
@@ -338,15 +338,15 @@ function validateAlertForm() {
   }
 
   const message = document.getElementById('alert-message').value;
-  if (message.length > 3000) {
-    document.getElementById('alert-message-error').textContent = 'Message must be 3000 characters or less';
+  if (message.length > 8000) {
+    document.getElementById('alert-message-error').textContent = 'Message must be 8000 characters or less';
     document.getElementById('alert-message-error').style.display = 'block';
     valid = false;
   }
 
   const msgQueryText = window.alertMsgQueryEditor ? window.alertMsgQueryEditor.state.doc.toString() : '';
-  if (msgQueryText.length > 3000) {
-    document.getElementById('alert-msgquery-error').textContent = 'Query must be 3000 characters or less';
+  if (msgQueryText.length > 8000) {
+    document.getElementById('alert-msgquery-error').textContent = 'Query must be 8000 characters or less';
     document.getElementById('alert-msgquery-error').style.display = 'block';
     valid = false;
   }
@@ -413,7 +413,21 @@ function hideQueryResults() {
 }
 
 async function saveAlert() {
-  if (!validateAlertForm()) return;
+  if (!validateAlertForm()) {
+    const firstError = document.querySelector('.form-group.has-error .error-message, #alert-query-error, #alert-message-error, #alert-msgquery-error');
+    let msg = 'Please fix the highlighted errors before saving.';
+    const candidates = [
+      document.getElementById('alert-query-error'),
+      document.getElementById('alert-message-error'),
+      document.getElementById('alert-msgquery-error'),
+      ...document.querySelectorAll('.form-group.has-error .error-message')
+    ];
+    for (const el of candidates) {
+      if (el && el.textContent && el.textContent.trim()) { msg = el.textContent.trim(); break; }
+    }
+    window.app.showToast(`Save failed: ${msg}`, 'error', 5000);
+    return;
+  }
 
   const saveBtn = document.getElementById('alerts-save-btn');
   saveBtn.disabled = true;

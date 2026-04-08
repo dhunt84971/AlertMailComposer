@@ -30,14 +30,14 @@ async function getAlertById(id) {
 function bindAlertFields(request, data) {
   return request
     .input('Enabled', sql.Bit, data.Enabled ? 1 : 0)
-    .input('Query', sql.VarChar(3000), data.Query || '')
+    .input('Query', sql.VarChar(8000), data.Query || '')
     .input('Subject', sql.VarChar(100), data.Subject)
-    .input('Message', sql.VarChar(3000), data.Message || '')
+    .input('Message', sql.VarChar(8000), data.Message || '')
     .input('Recipients', sql.VarChar(1000), data.Recipients)
     .input('RecipientsCC', sql.VarChar(1000), data.RecipientsCC || '')
     .input('RecipientsBCC', sql.VarChar(1000), data.RecipientsBCC || '')
     .input('MinutesResend', sql.Int, data.MinutesResend || 0)
-    .input('MessageQuery', sql.VarChar(3000), data.MessageQuery || '');
+    .input('MessageQuery', sql.VarChar(8000), data.MessageQuery || '');
 }
 
 async function createAlert(data) {
